@@ -54,7 +54,6 @@ model = NewModel(output_layers = [7,8])
 
 # Random array with the dimension of the layer 4
 target_ft = torch.rand((2048,8,8))
-print(target_ft)
 
 learning_rate = 0.00001
 params = [p for p in model.parameters() if p.requires_grad]
@@ -66,26 +65,9 @@ batch_size = 1
 channels = 3
 height = 256
 width = 256
+
 image_array = np.random.randint(0, 256, size=(batch_size, channels, height, width)).astype('float32')
 x = torch.from_numpy(image_array)
 
-
-for i in range(100):
-    # One pass through the model
-    out, layerout = model(x)
-    layer4out = layerout['layer4']
-                        
-    # Dummy loss
-    final_loss = 0 # torch.sum((label-out)**2)
-    layer_loss = -torch.sum(layer4out-target_ft)
-
-    total_loss = final_loss + layer_loss
-    total_loss.backward()
-
-    optimizer.step()
-    optimizer.zero_grad()
-    lr_scheduler.step()
-    print(total_loss)
-
-#print(out)
-#print(layer4out)
+out, layerout = model(x)
+layer4out = layerout['layer4']
